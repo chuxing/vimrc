@@ -3,6 +3,7 @@
 set nocompatible   "设定 gvim 运行在增强模式下,不使用vi的键盘模式"
 set helplang=cn    "设置帮助的语言"
 set history=700    "显示历史
+set clipboard=unnamedplus
 filetype plugin indent on  "为特定的文件类型允许插件文件的载入
 filetype off   
 "解决vim中文乱码方法：
@@ -132,7 +133,7 @@ nnoremap <C-z> :nohl<CR>
 "全选
 nnoremap <C-a> ggvG<CR> 
 "复制。
-map <C-c> "+yG<CR>
+nnoremap <C-c> "+yG<CR>
 "粘贴
 nnoremap <C-v> "+p<CR>
 inoremap <C-v> <Esc> "+p<CR>
@@ -140,6 +141,7 @@ inoremap <C-v> <Esc> "+p<CR>
 nnoremap <C-g> :w<CR>
 "save and quit
 inoremap ZZ <Esc> :wq<CR>
+nnoremap zz :wq<CR>
 "不保存退出
 nnoremap <C-l> :q<CR>
 "新建文件,:vs 文件名，可以打开一个文件
@@ -161,7 +163,7 @@ nnoremap <F6><F6> :ccl<CR>
 autocmd FileType c,cpp  nnoremap <C-F9> :w<cr>:make<cr>
 nnoremap<F9> :call CompileRun()<CR>
 nmap <silent> <F8> :TagbarToggle<CR>
-nnoremap <C-F8> :NERDTreeToggle <cr>
+nnoremap <F7> :NERDTreeToggle <cr>
 "C-F12刷新ctags
 map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
 "C-F11刷新cscope
@@ -213,26 +215,26 @@ func! CompileRun()
 endfunc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"自动加空格,||和|不能用
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au FileType c,cc,cpp,h,html,python,java :call Cp()
-fu Cp()
-	ino , ,<SPACE>
-	ino ; ;<SPACE>
-	ino <= <SPACE><=<SPACE>
-	ino *= <SPACE>*=<SPACE>
-	ino /= <SPACE>/=<SPACE>
-	ino >> <SPACE>>><SPACE>
-	ino << <SPACE><<<SPACE>
-	ino >= <SPACE>>=<SPACE>
-	ino == <SPACE>==<SPACE>
-	ino += <SPACE>+=<SPACE>
-	ino -= <SPACE>-=<SPACE>
-	ino && <SPACE>&&<SPACE>
-	ino != <SPACE>!=<SPACE>
-	ino = <SPACE>=<SPACE>
-	ino ^ <SPACE>^<SPACE>
-endf
+""自动加空格,||和|不能用
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"au FileType c,cc,cpp,h,html,python,java :call Cp()
+"fu Cp()
+	"ino , ,<SPACE>
+	"ino ; ;<SPACE>
+	"ino <= <SPACE><=<SPACE>
+	"ino *= <SPACE>*=<SPACE>
+	"ino /= <SPACE>/=<SPACE>
+	"ino >> <SPACE>>><SPACE>
+	"ino << <SPACE><<<SPACE>
+	"ino >= <SPACE>>=<SPACE>
+	"ino == <SPACE>==<SPACE>
+	"ino += <SPACE>+=<SPACE>
+	"ino -= <SPACE>-=<SPACE>
+	"ino && <SPACE>&&<SPACE>
+	"ino != <SPACE>!=<SPACE>
+	"ino = <SPACE>=<SPACE>
+	"ino ^ <SPACE>^<SPACE>
+"endf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "latex用
@@ -315,9 +317,10 @@ set laststatus=2
 set t_Co=256
 let g:Powerline_symbols = 'unicode'
 set encoding=utf8
+let g:Powerline_stl_path_style = 'full'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "查看函数跳转
-Bundle 'cscope.vim'
+"Bundle 'cscope.vim'
 "Bundle 'cecscope'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "sudo apt-get install cscope
@@ -348,13 +351,14 @@ endif
 "多光标批量操作
 "Bundle 'vim-multiple-cursors'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"会导致方向键失效
 "ctrl + n 开始选择
 "ctrl + p 向上取消
 "ctrl + x 跳过
 "esc   退出
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "php补全
-Bundle 'phpcomplete.vim'
+"Bundle 'phpcomplete.vim'
 "主题
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
@@ -425,8 +429,8 @@ Bundle 'EasyMotion'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:mapleader = ','
 ",, + w  找下文
-",, +ge 找上文
-",, + f+字符  查找某个字符,快速跳转定位到某个字符位置
+",, + b 找上文
+",, + f+字符  查找某个字符,快速跳转定位到下文某个字符位置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "自动识别文件编码；
 Bundle 'FencView.vim'
@@ -448,6 +452,8 @@ let Tlist_GainFocus_On_ToggleOpen=1
 Bundle 'The-NERD-Commenter'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "v选中多行，然后,cc( ,cm ,cs)加上注释  (,cu)解开注释
+nmap <C-/> ,cc<CR>
+nnoremap <C-/></> ,cu<CR>
 "normal下直接 n命令 就可，n表示以下的几行
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "解放生产力的神器，简单配置，就可以按照自己的风格快速输入大段代码。
@@ -476,6 +482,19 @@ Bundle 'AutoComplPop'
 "python补全
 Bundle  'davidhalter/jedi'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"代码对齐
+Bundle "jreybert/vim-align"
+Bundle 'junegunn/vim-easy-align'
+vmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+if !exists('g:easy_align_delimiters')
+	  let g:easy_align_delimiters = {}
+  endif
+  let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
+"sql 格式化
+Bundle 'smintz/vim-sqlutil'
+vmap <slient>sf <Plug>SQLU_Formatter<CR>
+nmap <slient>sf <Plug>SQLU_Formatter<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Pyclewn
